@@ -8,9 +8,9 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.function.Predicate;
 
-@SuppressWarnings("serial")
 public class Schedule implements Serializable {
 
+	private static final long serialVersionUID = 532192163341324910L;
 	private Set<Seance> schedule;
 	private Map<Time, Boolean> isTimeFree;
 	private final Time technicalBreakTime = new Time(0, 25);
@@ -28,6 +28,12 @@ public class Schedule implements Serializable {
 	
 	public Map<Time, Boolean> getIsTimeFree() {
 		return isTimeFree;
+	}
+	
+	public Optional<Seance> getMovieSeanceFromSet(Movie movie) {
+		Optional<Seance> seanceFound = schedule.stream().filter(entry -> entry.getMovie().equals(movie)).findFirst();
+
+		return seanceFound;
 	}
 	
 	public boolean isSeanceTimeFree(Seance seance) throws IllegalTimeFormatException {
@@ -58,14 +64,16 @@ public class Schedule implements Serializable {
 		}
 	}
 
-	public void addSeance() throws IllegalTimeFormatException {
-		Seance seance = Seance.inputSeance();
+	public boolean addSeance(Movie movie) throws IllegalTimeFormatException {
+		Seance seance = Seance.inputSeance(movie);
 
 		if (isSeanceTimeFree(seance)) {
 			registerSeanceInSchedule(seance);
 			System.out.println("Сеанс успешно добавлен в расписание!\n");
+			return true;
 		} else {
 			System.err.println("Добавление сеанса в расписание невозможно, т.к. данное время занято!\n");
+			return false;
 		}
 	}
 
@@ -93,16 +101,16 @@ public class Schedule implements Serializable {
 		}
 	}
 
-	public void removeSeance() throws IllegalTimeFormatException {
-		Seance removingSeance = Seance.inputSeance();
-
+	public boolean removeSeance(Seance removingSeance) throws IllegalTimeFormatException {
 		Optional<Seance> removingSeanceFound = findSeance(removingSeance);
 
 		if (removingSeanceFound.isPresent()) {
 			unregisterSeanceInSchedule(removingSeance, removingSeanceFound);
 			System.out.println("Сеанс успешно удалён из расписания!\n");
+			return true;
 		} else {
 			System.err.println("Введенный сеанс отсутствует в расписании!\n");
+			return false;
 		}
 	}
 	

@@ -10,9 +10,9 @@ import java.util.TreeMap;
 import java.util.function.Function;
 import static java.util.stream.Collectors.toList;
 
-@SuppressWarnings("serial")
 public class TimeTable implements Serializable {
 	
+	private static final long serialVersionUID = -4605084982551728546L;
 	private Map<Days, ArrayList<Time>> timeTable;
 
 	public TimeTable() {
@@ -33,10 +33,10 @@ public class TimeTable implements Serializable {
 		return timeTable.get(day).get(1);
 	}
 
-	public void addTimeTableEntry() throws IllegalTimeFormatException {
+	public boolean addTimeTableEntry() throws IllegalTimeFormatException {
 		Days day = Days.inputDay();
 		if (day == null)
-			return;
+			return false;
 
 		System.out.print("Время открытия - ");
 		Time openingTime = Time.inputTime();
@@ -46,25 +46,28 @@ public class TimeTable implements Serializable {
 
 		if (Time.timeToMinutes(closingTime) <= Time.timeToMinutes(openingTime)) {
 			System.err.println("Введённое время закрытия меньше или равно времени открытия!\n");
-			return;
+			return false;
 		}
 
 		timeTable.put(day, new ArrayList<Time>(Arrays.asList(openingTime, closingTime)));
 		System.out.println("Время работы в " + day.toLiteral(true) + " успешно добавлено в график работы!\n");
+		return true;
 	}
 
-	public void removeTimeTableEntry() {
+	public boolean removeTimeTableEntry() {
 		Days day = Days.inputDay();
 		if (day == null)
-			return;
+			return false;
 
 		Optional<Entry<Days, ArrayList<Time>>> timeTableEntryFound = findDayInTimeTable(day);
 
 		if (timeTableEntryFound.isPresent()) {
 			timeTable.remove(timeTableEntryFound.get().getKey());
 			System.out.println("Время работы в " + day.toLiteral(true) + " успешно удалено из графика работы!\n");
+			return true;
 		} else {
-			System.err.println(day.toLiteral(true) + " отсутствует в графике работы!\n");
+			System.err.println("Время работы в " + day.toLiteral(true) + " отсутствует в графике работы!\n");
+			return false;
 		}
 	}
 	

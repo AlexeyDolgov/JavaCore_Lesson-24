@@ -3,9 +3,9 @@ package ua.lviv.lgs.task24;
 import java.io.Serializable;
 import java.util.Scanner;
 
-@SuppressWarnings("serial")
 public class Movie implements Serializable {
 
+	private static final long serialVersionUID = 5260500899149552440L;
 	private String title;
 	private Time duration;
 

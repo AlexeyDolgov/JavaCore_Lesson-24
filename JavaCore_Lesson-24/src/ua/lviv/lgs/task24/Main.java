@@ -11,24 +11,27 @@ public class Main {
 		System.out.println("12 - сохранить кинотеатр в файл");
 		System.out.println("13 - загрузить кинотеатр из файла");
 		System.out.println("-= ГРАФИК РАБОТЫ КИНОТЕАТРА =-");
-		System.out.println("21 - добавить/изменить график работы кинотеатра на день");
+		System.out.println("21 - создать/изменить график работы кинотеатра на день");
 		System.out.println("22 - удалить график работы кинотеатра на день");
 		System.out.println("23 - вывести график работы кинотеатра на неделю");
 		System.out.println("-= ЗАЛЫ КИНОТЕАТРА =-");
-		System.out.println("31 - добавить зал в кинотеатр");
+		System.out.println("31 - создать зал в кинотеатре");
 		System.out.println("32 - удалить зал из кинотеатра");
 		System.out.println("33 - вывести перечень залов кинотеатра");
 		System.out.println("-= ГРАФИК РАБОТЫ ЗАЛА КИНОТЕАТРА =-");
-		System.out.println("41 - добавить/изменить график работы зала кинотеатра на день");
+		System.out.println("41 - создать/изменить график работы зала кинотеатра на день");
 		System.out.println("42 - удалить график работы зала кинотеатра на день");
 		System.out.println("43 - вывести график работы зала кинотеатра на неделю");
 		System.out.println("-= РАСПИСАНИЕ СЕАНСОВ ЗАЛА КИНОТЕАТРА =-");
-		System.out.println("51 - добавить/изменить расписание сеансов зала кинотеатра на день");
+		System.out.println("51 - создать/изменить расписание сеансов зала кинотеатра на день");
 		System.out.println("52 - удалить расписание сеансов зала кинотеатра на день");
 		System.out.println("53 - вывести расписание сеансов зала кинотеатра на неделю");
 		System.out.println("-= СЕАНСЫ ЗАЛА КИНОТЕАТРА НА ДЕНЬ =-");
 		System.out.println("61 - добавить сеанс в расписание сеансов зала кинотеатра на день");
 		System.out.println("62 - удалить сеанс из расписания сеансов зала кинотеатра на день");
+		System.out.println("-= ФИЛЬМЫ =-");
+		System.out.println("71 - добавить фильм и набор сеансов в расписание зала кинотеатра");
+		System.out.println("72 - удалить фильм из расписания сеансов всех залов кинотеатра");
 		System.out.println("-= ВЫХОД =-");
 		System.out.println("0 - выйти из программы");
 		System.out.println();
@@ -134,7 +137,17 @@ public class Main {
 				cinema.removeSeanceFromScheduleInHallInCinema();
 				break;
 			}
+			
+			case 71: {
+				cinema.addMovieToSeanceInScheduleInHallInCinema();
+				break;
+			}
 
+			case 72: {
+				cinema.removeMovieFromSeanceInScheduleInAllHallsInCinema();
+				break;
+			}
+			
 			case 0: {
 				System.out.println("Надеюсь, Вам удалось по достоинству оценить весь функционал нашего Кинотеатра! Всего наилучшего!\n");
 				System.exit(0);
@@ -142,7 +155,7 @@ public class Main {
 			}
 
 			default: {
-				System.out.println("Такого пункта меню не существует!");
+				System.err.println("Такого пункта меню не существует!\n");
 				break;
 			}
 			}

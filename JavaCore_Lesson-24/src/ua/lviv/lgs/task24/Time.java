@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
-@SuppressWarnings("serial")
 public class Time implements Comparable<Time>, Serializable {
 
+	private static final long serialVersionUID = 4487194286130673625L;
 	private int min;
 	private int hour;
 
@@ -135,9 +135,9 @@ public class Time implements Comparable<Time>, Serializable {
 	}
 }
 
-@SuppressWarnings("serial")
 class IllegalTimeFormatException extends Exception {
 	
+	private static final long serialVersionUID = 7568427077693695817L;
 	static final String message = "Input time must be within 0...24 for hours and 0..60 for minutes!";
 
 	public IllegalTimeFormatException() {

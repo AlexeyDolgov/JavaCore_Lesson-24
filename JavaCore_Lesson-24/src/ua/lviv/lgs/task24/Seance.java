@@ -2,9 +2,9 @@ package ua.lviv.lgs.task24;
 
 import java.io.Serializable;
 
-@SuppressWarnings("serial")
 public class Seance implements Comparable<Seance>, Serializable {
 
+	private static final long serialVersionUID = 2163550741859410305L;
 	private Movie movie;
 	private Time startTime;
 	private Time endTime;
@@ -39,9 +39,7 @@ public class Seance implements Comparable<Seance>, Serializable {
 		this.endTime = endTime;
 	}
 
-	public static Seance inputSeance() throws IllegalTimeFormatException {
-		Movie movie = Movie.inputMovie();
-
+	public static Seance inputSeance(Movie movie) throws IllegalTimeFormatException {
 		System.out.print("Начало сеанса - ");
 		Time startTime = Time.inputTime();
 

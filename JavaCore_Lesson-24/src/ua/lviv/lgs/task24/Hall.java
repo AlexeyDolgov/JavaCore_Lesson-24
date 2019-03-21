@@ -9,9 +9,9 @@ import java.util.Map.Entry;
 import java.util.function.Function;
 import static java.util.stream.Collectors.toList;
 
-@SuppressWarnings("serial")
 public class Hall implements Comparable<Hall>, Serializable {
 	
+	private static final long serialVersionUID = -901752129341087075L;
 	private String name;
 	private TimeTable hallTimeTable;
 	private Map<Days, Schedule> hallSchedule;
@@ -44,14 +44,22 @@ public class Hall implements Comparable<Hall>, Serializable {
 		return new Hall(name);
 	}
 
-	public void addTimeTableToHall() throws IllegalTimeFormatException {
-		hallTimeTable.addTimeTableEntry();
-		System.out.println("График работы успешно добавлен в кинозал \"" + name + "\"!\n");
+	public boolean addTimeTableToHall() throws IllegalTimeFormatException {
+		boolean isDone = hallTimeTable.addTimeTableEntry();
+		if (isDone) {
+			System.out.println("График работы успешно добавлен в кинозал \"" + name + "\"!\n");
+			return true;
+		} else
+			return false;
 	}
 
-	public void removeTimeTableFromHall() {
-		hallTimeTable.removeTimeTableEntry();
-		System.out.println("График работы успешно удалён из кинозала \"" + name + "\"!\n");
+	public boolean removeTimeTableFromHall() {
+		boolean isDone = hallTimeTable.removeTimeTableEntry();
+		if (isDone) {
+			System.out.println("График работы успешно удалён из кинозала \"" + name + "\"!\n");
+			return true;
+		} else
+			return false;
 	}
 	
 	public static boolean isScheduleTimeNonWorkable(Days day, TimeTable timeTable, Schedule schedule)
@@ -89,31 +97,36 @@ public class Hall implements Comparable<Hall>, Serializable {
 		return isScheduleTimeNonWorkable;
 	}
 
-	public void addScheduleToHall() throws IllegalTimeFormatException {
+	public boolean addScheduleToHall() throws IllegalTimeFormatException {
 		Days day = Days.inputDay();
 		if (day == null)
-			return;
+			return false;
 
 		if (hallTimeTable.findDayInTimeTable(day).isPresent()) {
 			
+			Movie movie = Movie.inputMovie();
 			Schedule schedule = new Schedule();
-			schedule.addSeance();
+			schedule.addSeance(movie);
 
 			if (isScheduleTimeNonWorkable(day, hallTimeTable, schedule)) {
 				hallSchedule.put(day, schedule);
 				System.out.println("Расписание сеансов на " + day.toLiteral(true) + " успешно добавлено в кинозал \"" + name + "\"!\n");
+				return true;
 			} else {
 				System.err.println("Добавление расписания сеансов на " + day.toLiteral(true) + " в кинозал \"" + name
 						+ "\" невозможно, т.к. существуют сеансы в нерабочее время кинозала!\n");
+				return false;
 			}
-		} else
+		} else {
 			System.err.println(day.toLiteral(true) + " отсутствует в графике работы!\n");
+			return false;
+		}
 	}
 	
-	public void removeScheduleFromHall() {
+	public boolean removeScheduleFromHall() {
 		Days day = Days.inputDay();
 		if (day == null)
-			return;
+			return false;
 
 		Optional<Entry<Days, Schedule>> hallScheduleEntryFound = hallSchedule.entrySet().stream()
 				.filter(entry -> entry.getKey().equals(day)).findFirst();
@@ -121,8 +134,10 @@ public class Hall implements Comparable<Hall>, Serializable {
 		if (hallScheduleEntryFound.isPresent()) {
 			hallSchedule.remove(hallScheduleEntryFound.get().getKey());
 			System.out.println("Расписание сеансов на " + day.toLiteral(true) + " успешно удалено из кинозала \"" + name + "\"!\n");
+			return true;
 		} else {
 			System.err.println(day.toLiteral(true) + " отсутствует в графике работы!\n");
+			return false;
 		}
 	}
 
@@ -131,6 +146,7 @@ public class Hall implements Comparable<Hall>, Serializable {
 		hallTimeTable.viewTimeTable();
 		System.out.println();
 	}
+	
 	public Function<Entry<Days, Schedule>, String> hallScheduleToString() {
 		return entry -> "Расписание сеансов в " + entry.getKey().toLiteral(true) + ":\n" + entry.getValue().toString();
 	}
